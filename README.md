@@ -9,7 +9,7 @@ Custom analysis software for ChIP-seq of DNA repair proteins after CRISPR/Cas9-m
 - Ensure that both `samtools` and `bowtie2` are added to path and can be called directly from bash
 
 ## Data requirements
-- Raw ChIP-seq FASTQ files and processed BAM files can be downloaded from SRA.
+- Raw ChIP-seq FASTQ files and processed BAM files can be downloaded from [SRA](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA622564).
 
 ## Generate processed BAM files (if starting from raw FASTQ files)
 1. Download sequencing reads in FASTQ format from SRA

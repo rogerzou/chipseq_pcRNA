@@ -31,8 +31,8 @@ c.to_wiggle_windows(bs + "gh2ax-4h-L-nD-rep2.bam", bs_a + "gh2ax-4h-L-nD-rep2", 
 c.to_wiggle_windows(bs + "gh2ax-4h-L-PKi-rep2.bam", bs_a + "gh2ax-4h-L-PKi-rep2", win, chrs)
 
 c.to_wiggle_windows(bs + "53bp1-wt.bam", bs_a + "53bp1-wt", win, chrs)
-c.to_wiggle_windows(bs + "gh2ax-wt-rep1.bam", bs_a + "gh2ax-wt-rep1", win, chrs)
-c.to_wiggle_windows(bs + "gh2ax-wt-rep2.bam", bs_a + "gh2ax-wt-rep2", win, chrs)
+c.to_wiggle_windows(bs + "gh2ax-wt-sub1.bam", bs_a + "gh2ax-wt-sub1", win, chrs)
+c.to_wiggle_windows(bs + "gh2ax-wt-sub2.bam", bs_a + "gh2ax-wt-sub2", win, chrs)
 
 
 """ For each window span, count number of reads in each bin. """
@@ -57,8 +57,8 @@ c.to_bins(bs + "gh2ax-4h-L-nD-rep2.bam", bs_a + "gh2ax-4h-L-nD-rep2", win, numbi
 c.to_bins(bs + "gh2ax-4h-L-PKi-rep2.bam", bs_a + "gh2ax-4h-L-PKi-rep2", win, numbins, chrs)
 
 c.to_bins(bs + "53bp1-wt.bam", bs_a + "53bp1-wt", win, numbins, chrs)
-c.to_bins(bs + "gh2ax-wt-rep1.bam", bs_a + "gh2ax-wt-rep1", win, numbins, chrs)
-c.to_bins(bs + "gh2ax-wt-rep2.bam", bs_a + "gh2ax-wt-rep2", win, numbins, chrs)
+c.to_bins(bs + "gh2ax-wt-sub1.bam", bs_a + "gh2ax-wt-sub1", win, numbins, chrs)
+c.to_bins(bs + "gh2ax-wt-sub2.bam", bs_a + "gh2ax-wt-sub2", win, numbins, chrs)
 
 
 """ Get the average 53BP1 and gH2AX peaks in RPM """
@@ -70,7 +70,7 @@ c.avgwig(bs_a + "gh2ax-1h-nL-nD-rep1.wig", bs_a + "gh2ax-1h-nL-nD-rep2.wig", bs_
 c.avgwig(bs_a + "gh2ax-4h-nL-nD-rep1.wig", bs_a + "gh2ax-4h-nL-nD-rep2.wig", bs_a + "gh2ax-4h-nL-nD-avg")
 c.avgwig(bs_a + "gh2ax-4h-L-nD-rep1.wig", bs_a + "gh2ax-4h-L-nD-rep2.wig", bs_a + "gh2ax-4h-L-nD-avg")
 c.avgwig(bs_a + "gh2ax-4h-L-PKi-rep1.wig", bs_a + "gh2ax-4h-L-PKi-rep2.wig", bs_a + "gh2ax-4h-L-PKi-avg")
-c.avgwig(bs_a + "gh2ax-wt-rep1.wig", bs_a + "gh2ax-wt-rep2.wig", bs_a + "gh2ax-wt-avg")
+c.avgwig(bs_a + "gh2ax-wt-sub1.wig", bs_a + "gh2ax-wt-sub2.wig", bs_a + "gh2ax-wt-avg")
 
 
 """ Calculate percent change from averaged 53BP1 and gH2AX peaks in RPM """
