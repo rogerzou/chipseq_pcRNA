@@ -12,7 +12,6 @@ import os
 import re
 import numpy as np
 import csv
-from scipy import stats
 
 
 def status_statement(current, final, count, chr=None):
@@ -283,127 +282,6 @@ def to_bins(filein, fileout, window, numbins, chr=None, generator=None):
     bam.close()
 
 
-def ttest_two(samp_file, ctrl_file, fileout, p=0.01):
-    """ From to_bins() outputs, perform significance testing between the bins of each window,
-    between experimental and control conditions
-
-    - T-test is passed if bin values of experimental condition windows is significantly higher than
-    those of the control condition (one-sided with Bonferroni correction)
-    - Outputs CSV file of binning results with t-test result
-    - Outputs WIG file indicating windows with significant t-test results
-
-    :param samp_file: output of to_bins() as CSV file for experimental condition
-    :param ctrl_file: output of to_bins() as CSV file for control as comparison
-    :param fileout: base output file name with extension (.csv) omitted; each row corresponds
-                    to each window, each column corresponds to the number of reads for each bin
-    :param p: p value cut-off
-
-    """
-    np_samp = np.loadtxt(samp_file, delimiter=',', dtype=object)
-    np_ctrl = np.loadtxt(ctrl_file, delimiter=',', dtype=object)
-    count = np_samp.shape[0]
-    if np_samp.shape[0] != np_ctrl.shape[0]:
-        raise ValueError("Number of windows between sample and control files are different!")
-    ot = np.zeros((count, 9), dtype=object)         # array to hold info for each bin
-    wig = open(fileout + "_ttest.wig", "w")
-    chr_i = None
-    prev = 0
-    chr_ctrl = np_ctrl[:, 0]                        # chr
-    chr_samp = np_samp[:, 0]
-    ran_ctrl = np_ctrl[:, 1:3].astype(int)          # start and end coordinates
-    ran_samp = np_samp[:, 1:3].astype(int)
-    bin_ctrl = np_ctrl[:, 3:].astype(int)           # bins
-    bin_samp = np_samp[:, 3:].astype(int)
-    for i in range(count):
-        if chr_samp[i] != chr_ctrl[i] or ran_samp[i, 0] != ran_ctrl[i, 0] \
-                or ran_samp[i, 1] != ran_ctrl[i, 1]:
-            raise ValueError("Between sample and control files, the chr, start, or end coordinates "
-                             "are different!")
-        else:
-            if chr_samp[i] != chr_i:
-                chr_i = chr_samp[i]
-                wig.write("variableStep\tchrom=%s\n" % chr_i)
-            ot[i, 0:3] = np_samp[i, 0:3]                    # chr, start, and end coordinates
-            ot[i, 3] = np.sum(bin_ctrl[i, :])               # sum of ctrl
-            ot[i, 4] = np.sum(bin_samp[i, :])               # sum of sample
-            ttest = stats.ttest_rel(bin_samp[i, :], bin_ctrl[i, :])
-            ot[i, 5] = ttest[0]                             # t test
-            ot[i, 6] = ttest[1]                             # t test
-            start_i = ran_samp[i, 0]
-            if ot[i, 5] > 0 and ot[i, 6] / 2 < p / count:   # one-sided t-test with Bonferroni
-                ot[i, 7] = 1
-                ot[i, 8] = start_i - prev
-                prev = start_i
-                wig.write("%i\t%i\n" % (start_i, 1))
-            else:
-                ot[i, 7] = np.nan
-                ot[i, 8] = np.nan
-                wig.write("%i\t%i\n" % (start_i, 0))
-            status_statement(i, count, 20, chr_i)
-    wig.close()
-    np.savetxt(fileout + "_ttest.csv", ot, fmt='%s', delimiter=',')
-
-
-def ttest_span(samp_file, fileout, chrs, cuts, names, skipl):
-    """
-    Calculate the width of broad peaks, given center positions and a constant skip length, from
-    ttest of binning analysis; outputs in broadPeak format.
-    :param samp_file: input file that is the output of "ttest_two()"
-    :param fileout: output file (extension omitted)
-    :param chrs: array of chromosomes that correspond to each cut site
-    :param cuts: array of coordinates that denote cut site
-    :param names: array of names for each cut site
-    :param skipl: skip length
-
-    """
-    np_samp = np.loadtxt(samp_file, delimiter=',', dtype=object)
-    f = open(fileout + ".broadPeak", 'w')
-    for chr_i, cut_i, name_i in zip(chrs, cuts, names):     # iterate over each expected peak
-        cutrow = None                   # row of np_samp with expected cut site
-        minrow = None                   # row of np_samp that is the furthest upstream of cut site
-        maxrow = None                   # row of np_samp that is the furthest downstream of cut site
-        for i in range(np_samp.shape[0]):           # assign values to minrow, maxrow, cutrow
-            if np_samp[i, 7] != "nan":
-                if minrow is None and np_samp[i, 0] == chr_i:
-                    minrow = i
-                    maxrow = i
-                if maxrow is not None and np_samp[i, 0] == chr_i:
-                    maxrow = i
-                if np_samp[i, 0] == chr_i and int(np_samp[i, 1]) <= cut_i <= int(np_samp[i, 2]):
-                    cutrow = i
-        if cutrow is not None:                      # determine peak span if peak is found
-            # check in the upstream (rev) direction
-            revrow_tmp = cutrow
-            revrow = cutrow
-            revct = 0
-            while revrow_tmp > minrow and revct <= skipl:
-                revrow_tmp -= 1
-                if np_samp[revrow_tmp, 7] == 'nan':
-                    revct += int(np_samp[revrow_tmp, 2]) - int(np_samp[revrow_tmp, 1]) + 1
-                else:
-                    revct = 0
-                    revrow = revrow_tmp
-            fwdrow_tmp = cutrow
-            fwdrow = cutrow
-            fwdct = 0
-            # check in the downstream (fwd) direction
-            while fwdrow_tmp < maxrow and fwdct <= skipl:
-                fwdrow_tmp += 1
-                if np_samp[fwdrow_tmp, 7] == 'nan':
-                    fwdct += int(np_samp[fwdrow_tmp, 2]) - int(np_samp[fwdrow_tmp, 1]) + 1
-                else:
-                    fwdct = 0
-                    fwdrow = fwdrow_tmp
-            # get coordinates in both upstream and downstream direction, write to file
-            revval = int(np_samp[revrow, 1])
-            fwdval = int(np_samp[fwdrow, 2]) + 1
-            width = fwdval - revval
-            f.write("%s\t%i\t%i\t%s\t1\t.\t%i\t-1\t-1\n" % (chr_i, revval, fwdval, name_i, width))
-        else:
-            print("Cut site has no enrichment")
-    f.close()
-
-
 def avgwig(file1, file2, fileout):
     """
     Given two wig files of same structure, output the average of both as a wig file
@@ -425,26 +303,6 @@ def avgwig(file1, file2, fileout):
                 outwig.write("%0.5f\n" % np.mean([val2, val1]))
 
 
-def avgspan(file1, file2, fileout):
-    """
-    Given two broadPeak files listing peak spans, output the average as a broadPeak file
-    :param file1: broadPeak file 1 (e.x. replicate 1)
-    :param file2: broadPeak file 2 (e.x. replicate 2)
-    :param fileout: output broadPeak file (extension omitted)
-
-    """
-    with open(file1, "r") as f1, open(file2, "r") as f2, open(fileout + ".broadPeak", "w") as outwig:
-        for line1, line2 in zip(f1, f2):
-            spl1 = line1.split('\t')
-            spl2 = line2.split('\t')
-            outline = spl1
-            outline[1] = str(int(np.mean([int(spl1[1]), int(spl2[1])])))
-            outline[2] = str(int(np.mean([int(spl1[2]), int(spl2[2])])))
-            outline[6] = str(int(outline[2]) - int(outline[1]) + 1)
-            outline[8] = outline[8].split('\n')[0]
-            outwig.write('\t'.join(outline) + '\n')
-
-
 def percentchange(file1, file2, fileout):
     """
     Given two wig files, calculate the percent change from file1 to file2
@@ -463,7 +321,7 @@ def percentchange(file1, file2, fileout):
             else:
                 val1 = float(l1.split("\n")[0])
                 val2 = float(l2.split("\n")[0])
-                if val1 <= 2:
+                if val1 == 0:
                     outwig.write("%0.5f\n" % 0)
                 else:
                     outwig.write("%0.5f\n" % ((val2 - val1) / val1))

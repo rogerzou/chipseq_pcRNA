@@ -31,15 +31,11 @@ declare -a filelist=(\
 "/mnt/d/pcRNA_SRA1/mre11-4h-L-nD-rep2" \
 "/mnt/d/pcRNA_SRA1/mre11-4h-L-PKi-rep2" \
 "/mnt/d/pcRNA_SRA2/53bp1-00m-rep1" \
-"/mnt/d/pcRNA_SRA2/53bp1-15m-rep1" \
 "/mnt/d/pcRNA_SRA2/53bp1-30m-rep1" \
-"/mnt/d/pcRNA_SRA2/53bp1-45m-rep1" \
 "/mnt/d/pcRNA_SRA2/53bp1-60m-rep1" \
 "/mnt/d/pcRNA_SRA2/53bp1-2h-rep1" \
 "/mnt/d/pcRNA_SRA2/53bp1-00m-rep2" \
-"/mnt/d/pcRNA_SRA2/53bp1-15m-rep2" \
 "/mnt/d/pcRNA_SRA2/53bp1-30m-rep2" \
-"/mnt/d/pcRNA_SRA2/53bp1-45m-rep2" \
 "/mnt/d/pcRNA_SRA2/53bp1-60m-rep2" \
 "/mnt/d/pcRNA_SRA2/53bp1-2h-rep2" \
 "/mnt/d/pcRNA_SRA2/mre11-00m-rep1" \

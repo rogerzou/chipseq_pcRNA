@@ -61,59 +61,6 @@ c.to_bins(bs + "gh2ax-wt-rep1.bam", bs_a + "gh2ax-wt-rep1", win, numbins, chrs)
 c.to_bins(bs + "gh2ax-wt-rep2.bam", bs_a + "gh2ax-wt-rep2", win, numbins, chrs)
 
 
-""" Perform T-test on bins by comparing each time point to wild type """
-c.ttest_two(bs_a + "53bp1-1h-nL-nD-rep1.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-1h-nL-nD-rep1", p=0.05)
-c.ttest_two(bs_a + "53bp1-4h-nL-nD-rep1.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-4h-nL-nD-rep1", p=0.05)
-c.ttest_two(bs_a + "53bp1-4h-L-nD-rep1.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-4h-L-nD-rep1", p=0.05)
-c.ttest_two(bs_a + "53bp1-4h-L-PKi-rep1.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-4h-L-PKi-rep1", p=0.05)
-c.ttest_two(bs_a + "53bp1-1h-nL-nD-rep2.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-1h-nL-nD-rep2", p=0.05)
-c.ttest_two(bs_a + "53bp1-4h-nL-nD-rep2.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-4h-nL-nD-rep2", p=0.05)
-c.ttest_two(bs_a + "53bp1-4h-L-nD-rep2.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-4h-L-nD-rep2", p=0.05)
-c.ttest_two(bs_a + "53bp1-4h-L-PKi-rep2.csv", bs_a + "53bp1-wt.csv", bs_a + "53bp1-4h-L-PKi-rep2", p=0.05)
-
-c.ttest_two(bs_a + "gh2ax-1h-nL-nD-rep1.csv", bs_a + "gh2ax-wt-rep1.csv", bs_a + "gh2ax-1h-nL-nD-rep1", p=0.05)
-c.ttest_two(bs_a + "gh2ax-4h-nL-nD-rep1.csv", bs_a + "gh2ax-wt-rep1.csv", bs_a + "gh2ax-4h-nL-nD-rep1", p=0.05)
-c.ttest_two(bs_a + "gh2ax-4h-L-nD-rep1.csv", bs_a + "gh2ax-wt-rep1.csv", bs_a + "gh2ax-4h-L-nD-rep1", p=0.05)
-c.ttest_two(bs_a + "gh2ax-4h-L-PKi-rep1.csv", bs_a + "gh2ax-wt-rep1.csv", bs_a + "gh2ax-4h-L-PKi-rep1", p=0.05)
-c.ttest_two(bs_a + "gh2ax-1h-nL-nD-rep2.csv", bs_a + "gh2ax-wt-rep2.csv", bs_a + "gh2ax-1h-nL-nD-rep2", p=0.05)
-c.ttest_two(bs_a + "gh2ax-4h-nL-nD-rep2.csv", bs_a + "gh2ax-wt-rep2.csv", bs_a + "gh2ax-4h-nL-nD-rep2", p=0.05)
-c.ttest_two(bs_a + "gh2ax-4h-L-nD-rep2.csv", bs_a + "gh2ax-wt-rep2.csv", bs_a + "gh2ax-4h-L-nD-rep2", p=0.05)
-c.ttest_two(bs_a + "gh2ax-4h-L-PKi-rep2.csv", bs_a + "gh2ax-wt-rep2.csv", bs_a + "gh2ax-4h-L-PKi-rep2", p=0.05)
-
-
-""" Calculate the width of 53BP1 and gH2AX peaks in broadPeak format. """
-names = ["ACTB", "MYC"]
-cuts = [5529660, 127736258]
-span = 500000
-c.ttest_span(bs_a + "53bp1-1h-nL-nD-rep1_ttest.csv", bs_a + "53bp1-1h-nL-nD-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-4h-nL-nD-rep1_ttest.csv", bs_a + "53bp1-4h-nL-nD-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-4h-L-nD-rep1_ttest.csv", bs_a + "53bp1-4h-L-nD-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-4h-L-PKi-rep1_ttest.csv", bs_a + "53bp1-4h-L-PKi-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-1h-nL-nD-rep2_ttest.csv", bs_a + "53bp1-1h-nL-nD-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-4h-nL-nD-rep2_ttest.csv", bs_a + "53bp1-4h-nL-nD-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-4h-L-nD-rep2_ttest.csv", bs_a + "53bp1-4h-L-nD-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "53bp1-4h-L-PKi-rep2_ttest.csv", bs_a + "53bp1-4h-L-PKi-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-1h-nL-nD-rep1_ttest.csv", bs_a + "gh2ax-1h-nL-nD-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-4h-nL-nD-rep1_ttest.csv", bs_a + "gh2ax-4h-nL-nD-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-4h-L-nD-rep1_ttest.csv", bs_a + "gh2ax-4h-L-nD-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-4h-L-PKi-rep1_ttest.csv", bs_a + "gh2ax-4h-L-PKi-rep1_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-1h-nL-nD-rep2_ttest.csv", bs_a + "gh2ax-1h-nL-nD-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-4h-nL-nD-rep2_ttest.csv", bs_a + "gh2ax-4h-nL-nD-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-4h-L-nD-rep2_ttest.csv", bs_a + "gh2ax-4h-L-nD-rep2_span", chrs, cuts, names, span)
-c.ttest_span(bs_a + "gh2ax-4h-L-PKi-rep2_ttest.csv", bs_a + "gh2ax-4h-L-PKi-rep2_span", chrs, cuts, names, span)
-
-
-""" Get span average """
-c.avgspan(bs_a + "53bp1-1h-nL-nD-rep1_span.broadPeak", bs_a + "53bp1-1h-nL-nD-rep2_span.broadPeak", bs_a + "53bp1-1h-nL-nD-span")
-c.avgspan(bs_a + "53bp1-4h-nL-nD-rep1_span.broadPeak", bs_a + "53bp1-4h-nL-nD-rep2_span.broadPeak", bs_a + "53bp1-4h-nL-nD-span")
-c.avgspan(bs_a + "53bp1-4h-L-nD-rep1_span.broadPeak", bs_a + "53bp1-4h-L-nD-rep2_span.broadPeak", bs_a + "53bp1-4h-L-nD-span")
-c.avgspan(bs_a + "53bp1-4h-L-PKi-rep1_span.broadPeak", bs_a + "53bp1-4h-L-PKi-rep2_span.broadPeak", bs_a + "53bp1-4h-L-PKi-span")
-c.avgspan(bs_a + "gh2ax-1h-nL-nD-rep1_span.broadPeak", bs_a + "gh2ax-1h-nL-nD-rep2_span.broadPeak", bs_a + "gh2ax-1h-nL-nD-span")
-c.avgspan(bs_a + "gh2ax-4h-nL-nD-rep1_span.broadPeak", bs_a + "gh2ax-4h-nL-nD-rep2_span.broadPeak", bs_a + "gh2ax-4h-nL-nD-span")
-c.avgspan(bs_a + "gh2ax-4h-L-nD-rep1_span.broadPeak", bs_a + "gh2ax-4h-L-nD-rep2_span.broadPeak", bs_a + "gh2ax-4h-L-nD-span")
-c.avgspan(bs_a + "gh2ax-4h-L-PKi-rep1_span.broadPeak", bs_a + "gh2ax-4h-L-PKi-rep2_span.broadPeak", bs_a + "gh2ax-4h-L-PKi-span")
-
-
 """ Get the average 53BP1 and gH2AX peaks in RPM """
 c.avgwig(bs_a + "53bp1-1h-nL-nD-rep1.wig", bs_a + "53bp1-1h-nL-nD-rep2.wig", bs_a + "53bp1-1h-nL-nD-avg")
 c.avgwig(bs_a + "53bp1-4h-nL-nD-rep1.wig", bs_a + "53bp1-4h-nL-nD-rep2.wig", bs_a + "53bp1-4h-nL-nD-avg")
